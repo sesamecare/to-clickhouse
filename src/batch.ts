@@ -33,6 +33,6 @@ import { SourceDatabaseRowRecord, RowFetchFunction, Bookmark } from './types';
         lastRow = row;
         yield row;
       }
-    } while (rowsThisRun === limit);
+    } while (rowsThisRun === limit && rowsThisRun > 0);
   };
 }

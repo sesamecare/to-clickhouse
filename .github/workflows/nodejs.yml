@@ -23,11 +23,48 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js 18
+    - name: Use Node.js 20
       uses: actions/setup-node@v3
       with:
         node-version: 20
         cache: yarn
+
+    - uses: getsentry/action-clickhouse-in-ci@v1
+    - name: Run postgres
+      shell: bash
+      run: |
+        docker run \
+          --name postgres \
+          --health-cmd pg_isready \
+          --health-interval 10s \
+          --health-timeout 5s \
+          --health-retries 5 \
+          -e POSTGRES_PASSWORD=postgres \
+          -e PGUSER=postgres \
+          -p 5432:5432 \
+          -d ghcr.io/sesamecare/postgres-postgis-plv8:main
+
+    - name: Wait for PostgreSQL to be ready
+      shell: bash
+      run: |
+        for i in {1..20}; do
+          if docker inspect --format "{{json .State.Health.Status }}" ${{ inputs.name || 'postgres' }} | grep '"healthy"'; then
+            echo "PostgreSQL is ready!"
+            exit 0
+          fi
+          echo "Waiting for PostgreSQL to be ready..."
+          sleep 5
+        done
+        echo "PostgreSQL did not become ready in time."
+        exit 1
+
+    - name: Add docker container cleanup
+      uses: webiny/action-post-run@3.0.0
+      id: post-run-command
+      with:
+        run: |
+          docker rm -f postgres
+
     - name: npm install, lint, build, and test
       run: |
         yarn install --immutable
