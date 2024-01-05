@@ -1,0 +1,72 @@
+{
+  "name": "@sesamecare-oss/to-clickhouse",
+  "version": "0.0.0",
+  "description": "Synchronize data between a relational store such as Postgres and a Clickhouse database",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "author": "Developers <developers@sesamecare.com>",
+  "license": "UNLICENSED",
+  "packageManager": "yarn@3.6.0",
+  "scripts": {
+    "build": "make",
+    "clean": "make clean",
+    "lint": "eslint .",
+    "postinstall": "coconfig",
+    "test": "vitest"
+  },
+  "keywords": [
+    "typescript",
+    "sesame"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sesamecare/to-clickhouse.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/exec",
+        {
+          "publishCmd": "yarn dlx pinst --disable"
+        }
+      ],
+      "@semantic-release/npm",
+      "@semantic-release/github"
+    ]
+  },
+  "config": {
+    "coconfig": "@openapi-typescript-infra/coconfig"
+  },
+  "devDependencies": {
+    "@openapi-typescript-infra/coconfig": "^4.3.0",
+    "@semantic-release/exec": "^6.0.3",
+    "@semantic-release/github": "^9.2.6",
+    "@types/node": "^20.10.6",
+    "@types/pg": "^8.10.9",
+    "@types/pg-cursor": "^2.7.2",
+    "@typescript-eslint/eslint-plugin": "^6.17.0",
+    "@typescript-eslint/parser": "^6.17.0",
+    "coconfig": "^1.4.1",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-import": "^2.29.1",
+    "kysely": "^0.27.1",
+    "kysely-codegen": "^0.11.0",
+    "pg": "^8.11.3",
+    "pg-cursor": "^2.10.3",
+    "typescript": "^5.3.3",
+    "vitest": "^1.1.2"
+  },
+  "dependencies": {
+    "@clickhouse/client": "^0.2.7"
+  }
+}
