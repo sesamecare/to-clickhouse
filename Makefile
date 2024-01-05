@@ -24,6 +24,7 @@ clean:
 
 __tests__/generated/database.ts:
 	echo "Generating database types"
+	yarn ts-node __tests__/db.fixtures.ts
 	DATABASE_URL=postgres://$(PGUSER):$(PGPASSWORD)@$(PGHOST)/chtest yarn kysely-codegen \
 	        --dialect postgres --schema public \
 	        --out-file __tests__/generated/database.ts

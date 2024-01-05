@@ -10,6 +10,7 @@ import { Kysely, PostgresDialect } from 'kysely';
 import { synchronizeTable } from '../src/index';
 
 import { DB } from './generated/database';
+import { createPgDb } from './db.fixtures';
 
 const TESTPGDB = 'chtest';
 
@@ -19,24 +20,15 @@ describe('move tables from postgres to clickhouse', () => {
 
   beforeEach(async () => {
     // Create the postgres db and load the schema
-    let pool = new Pool({
-      database: 'postgres',
-      host: process.env.PGHOST || 'localhost',
-      user: process.env.PGUSER || 'postgres',
-      password: process.env.PGPASSWORD || 'postgres',
-    });
-    await pool.query(`DROP DATABASE IF EXISTS ${TESTPGDB}`);
-    await pool.query(`CREATE DATABASE ${TESTPGDB}`);
-    pool = new Pool({
-      database: TESTPGDB,
-      host: process.env.PGHOST || 'localhost',
-      user: process.env.PGUSER || 'postgres',
-      password: process.env.PGPASSWORD || 'postgres',
-    });
-    await pool.query(fs.readFileSync(path.resolve(__dirname, 'db/pg.sql'), 'utf8'));
+    await createPgDb();
     const dialect = new PostgresDialect({
       cursor: Cursor,
-      pool,
+      pool: new Pool({
+        database: TESTPGDB,
+        host: process.env.PGHOST || 'localhost',
+        user: process.env.PGUSER || 'postgres',
+        password: process.env.PGPASSWORD || 'postgres',
+      }),
     });
     db = new Kysely<DB>({ dialect });
 
