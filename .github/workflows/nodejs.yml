@@ -68,8 +68,8 @@ jobs:
     - name: npm install, lint, build, and test
       run: |
         yarn install --immutable
-        yarn lint
         yarn build
+        yarn lint
         yarn test
       env:
         CI: true
