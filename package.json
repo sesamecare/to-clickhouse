@@ -8,7 +8,7 @@
   "license": "UNLICENSED",
   "packageManager": "yarn@3.6.0",
   "scripts": {
-    "build": "make",
+    "build": "make ts",
     "clean": "make clean",
     "lint": "eslint .",
     "postinstall": "coconfig",
