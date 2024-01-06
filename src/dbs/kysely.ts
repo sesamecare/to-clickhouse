@@ -83,6 +83,13 @@ export const kysely = {
       tableName: spec.to,
     }, bookmark);
   },
+  /**
+   * Copy the contents of a table that is "forward only" - that is, the id column is enough
+   * to get a stable load. If you do not pass a bookmark, then we will copy all the rows
+   * in PK order. If you do pass a bookmark, we will copy all the rows with a PK greater
+   * than the provided rowId. This allows you to handle both tables that do not update existing content
+   * and tables that do.
+   */
   async copyTable<
     Schema,
     T extends keyof Schema & string,
