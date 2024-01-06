@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, test } from 'vitest';
 import { ClickHouseClient } from '@clickhouse/client';
 import { Kysely } from 'kysely';
 
-import { kysely } from '../src/dbs/kysely';
+import { copyTable, syncTable } from '../src/dbs/kysely';
 
 import { createChDb, createPgDb } from './db.fixtures';
 import { kyselyDb } from './kysely.fixtures';
@@ -28,7 +28,7 @@ describe('simple kysely interface', () => {
   });
 
   test('should sync to clickhouse', async () => {
-    const detail = await kysely.copyTable(db, ch, {}, {
+    const detail = await copyTable(db, ch, {}, {
       from: 'address_types',
       to: 'identity__address_types',
       pk: 'address_type_id',
@@ -41,7 +41,7 @@ describe('simple kysely interface', () => {
       pk: 'individual_id',
       delaySeconds: 0,
     } as const;
-    const ind = await kysely.syncTable(db, ch, {}, indSpec);
+    const ind = await syncTable(db, ch, {}, indSpec);
     expect(ind.rows, 'Table should copy 3 rows').toBe(3);
 
     await new Promise((resolve) => setTimeout(resolve, 250));
@@ -50,7 +50,7 @@ describe('simple kysely interface', () => {
       .where('individual_id', '=', '1')
       .execute();
 
-    const upd = await kysely.syncTable(db, ch, ind.bookmark, indSpec);
+    const upd = await syncTable(db, ch, ind.bookmark, indSpec);
     expect(upd.rows, 'Table should still copy 3 rows because updated_at >= should match previous rows too').toBe(3);
 
     await new Promise((resolve) => setTimeout(resolve, 250));
@@ -59,7 +59,7 @@ describe('simple kysely interface', () => {
       .where('individual_id', '=', '2')
       .execute();
 
-    const upd2 = await kysely.syncTable(db, ch, upd.bookmark, indSpec);
+    const upd2 = await syncTable(db, ch, upd.bookmark, indSpec);
     expect(upd2.rows, 'Copy 2 rows after second update').toBe(2);
   });
 });

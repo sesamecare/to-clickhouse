@@ -43,3 +43,17 @@ await synchronizeTable({
       },
     }, {})
 ```
+
+## Kysely
+
+We have custom implentnations for Kysely that make things even easier. To copy a fact table from a Kysely DB (including nice autocomplete):
+
+```typescript
+import { copyTable } from '@sesamecare-oss/to-clickhouse/kysely';
+
+await copyTable(db, ch, {}, {
+  from: 'address_types',
+  to: 'identity__address_types',
+  pk: 'address_type_id',
+});
+```
