@@ -14,6 +14,11 @@
     "postinstall": "coconfig",
     "test": "vitest"
   },
+  "exports": {
+    ".": "./build/index.js",
+    "./kysely": "./build/dbs/kysely.js",
+    "./package.json": "./package.json"
+  },
   "keywords": [
     "typescript",
     "sesame"
@@ -44,6 +49,9 @@
   },
   "config": {
     "coconfig": "@openapi-typescript-infra/coconfig"
+  },
+  "optionalDependencies": {
+    "kysely": "^0.27.1"
   },
   "devDependencies": {
     "@openapi-typescript-infra/coconfig": "^4.3.0",

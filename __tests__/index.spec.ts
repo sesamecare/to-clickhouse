@@ -1,16 +1,12 @@
-import fs from 'fs';
-import path from 'path';
-
-import { Pool } from 'pg';
 import { afterEach, beforeEach, describe, expect, test } from 'vitest';
-import { ClickHouseClient, createClient } from '@clickhouse/client';
-import Cursor from 'pg-cursor';
-import { Kysely, PostgresDialect } from 'kysely';
+import { ClickHouseClient } from '@clickhouse/client';
+import { Kysely } from 'kysely';
 
 import { synchronizeTable } from '../src/index';
 
 import { DB } from './generated/database';
-import { createPgDb } from './db.fixtures';
+import { createChDb, createPgDb } from './db.fixtures';
+import { kyselyDb } from './kysely.fixtures';
 
 const TESTPGDB = 'chtest';
 
@@ -19,35 +15,9 @@ describe('move tables from postgres to clickhouse', () => {
   let db: Kysely<DB>;
 
   beforeEach(async () => {
-    // Create the postgres db and load the schema
-    await createPgDb();
-    const dialect = new PostgresDialect({
-      cursor: Cursor,
-      pool: new Pool({
-        database: TESTPGDB,
-        host: process.env.PGHOST || 'localhost',
-        user: process.env.PGUSER || 'postgres',
-        password: process.env.PGPASSWORD || 'postgres',
-      }),
-    });
-    db = new Kysely<DB>({ dialect });
-
-    // Create the clickhouse db and load the schema
-    ch = createClient({
-      database: 'default',
-      host: process.env.CHHOST || 'http://localhost:8123',
-      username: process.env.CHUSERNAME || 'default',
-      password: process.env.CHPASSWORD || '',
-    });
-    await ch.command({ query: `DROP DATABASE IF EXISTS ${TESTPGDB}` });
-    await ch.command({ query: `CREATE DATABASE ${TESTPGDB}` });
-    ch = createClient({
-      database: 'chtest',
-      host: process.env.CHHOST || 'http://localhost:8123',
-      username: process.env.CHUSERNAME || 'default',
-      password: process.env.CHPASSWORD || '',
-    });
-    await ch.command({ query: fs.readFileSync(path.resolve(__dirname, 'db/clickhouse.sql'), 'utf8') });
+    await createPgDb(TESTPGDB);
+    ({ db } = kyselyDb(TESTPGDB));
+    ch = await createChDb(TESTPGDB);
   });
 
   afterEach(async () => {
