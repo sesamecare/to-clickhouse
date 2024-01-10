@@ -103,11 +103,12 @@ export async function copyTable<
     from: T;
     to: string;
     pk: PK;
+    optimize: boolean;
   },
 ) {
   const baseQuery = db.selectFrom(spec.from).selectAll();
 
-  return synchronizeTable({
+  const result = synchronizeTable({
     getRows(bookmark, limit) {
       type TableWhere = Parameters<typeof baseQuery['where']>;
       let completeQuery = baseQuery;
@@ -136,4 +137,8 @@ export async function copyTable<
     clickhouse: ch,
     tableName: spec.to,
   }, bookmark);
+  if (spec.optimize !== false) {
+    await ch.command({ query: `OPTIMIZE TABLE ${spec.to} FINAL` });
+  }
+  return result;
 }
