@@ -44,6 +44,11 @@ await synchronizeTable({
     }, {})
 ```
 
+## Migrations
+
+This module includes a "callable" version of [clickhouse-migrations](https://github.com/VVVi/clickhouse-migrations) which makes it easier
+to apply migrations as part of a workflow.
+
 ## Kysely
 
 We have custom implentnations for Kysely that make things even easier. To copy a fact table from a Kysely DB (including nice autocomplete):

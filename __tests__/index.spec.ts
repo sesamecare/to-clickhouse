@@ -1,8 +1,10 @@
+import path from 'path';
+
 import { afterEach, beforeEach, describe, expect, test } from 'vitest';
 import { ClickHouseClient } from '@clickhouse/client';
 import { Kysely } from 'kysely';
 
-import { synchronizeTable } from '../src/index';
+import { getMigrationsInDirectory, getMigrationsToApply, synchronizeTable } from '../src/index';
 
 import { DB } from './generated/database';
 import { createChDb, createPgDb } from './db.fixtures';
@@ -76,5 +78,11 @@ describe('move tables from postgres to clickhouse', () => {
       tableName: 'identity__address_types',
     }, {});
     expect(detail.rows).toBe(2);
+  });
+
+  test('migrations are recorded', async () => {
+    const migrations = getMigrationsInDirectory(path.resolve(__dirname, 'migrations'));
+    const toApply = await getMigrationsToApply(ch, migrations);
+    expect(toApply.length).toBe(0);
   });
 });

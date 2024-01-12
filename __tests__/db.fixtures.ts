@@ -4,6 +4,8 @@ import path from 'path';
 import { Pool } from 'pg';
 import { createClient } from '@clickhouse/client';
 
+import { applyMigrationsInDirectory } from '../src/migrations';
+
 export function pgPool(db: string) {
   return new Pool({
     database: db,
@@ -40,15 +42,18 @@ export function chdb(db: string) {
 }
 
 export async function createChDb(db: string) {
-  // Create the clickhouse db and load the schema
   const ch = chdb('default');
   await ch.command({ query: `DROP DATABASE IF EXISTS ${db}` });
-  await ch.command({ query: `CREATE DATABASE ${db}` });
+  await ch.close();
 
-  const ch2 = chdb(db);
-  const cmds = fs.readFileSync(path.resolve(__dirname, 'db/clickhouse.sql'), 'utf8').split('---');
-  await cmds.reduce((prev, cmd) => prev.then(() => ch2.command({ query: cmd }).then(() => undefined)), Promise.resolve(undefined));
-  return ch2;
+  // Create the clickhouse db and load the schema
+  await applyMigrationsInDirectory({
+    host: process.env.CHHOST || 'http://localhost:8123',
+    username: process.env.CHUSERNAME || 'default',
+    password: process.env.CHPASSWORD || '',
+    database: db,
+  }, path.resolve(__dirname, 'migrations'));
+  return chdb(db);
 }
 
 if (require.main === module) {
