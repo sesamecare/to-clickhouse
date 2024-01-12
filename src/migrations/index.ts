@@ -148,4 +148,5 @@ export async function applyMigrationsInDirectory(config: NodeClickHouseClientCon
   if (toApply.length > 0) {
     return applyMigrations(targetDb, migrations);
   }
+  return toApply.map((m) => m.filename);
 }
