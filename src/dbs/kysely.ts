@@ -51,7 +51,7 @@ export async function syncTable<
       const udColumn = (spec.timestampColumn || 'updated_at') as unknown as TableWhere[0];
       let completeQuery = baseQuery
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .where(udColumn, '<', sql<any>`NOW() - INTERVAL \'1 SECOND\' * ${spec.delaySeconds || 60}`)
+        .where(udColumn, '<', sql<any>`NOW() - INTERVAL \'1 SECOND\' * ${spec.delaySeconds === undefined ? 60 : spec.delaySeconds}`)
       // Too complicated to figure out how to get this type to be accurate. But it is.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if (bookmark?.rowTimestamp && bookmark?.rowId) {
