@@ -33,7 +33,7 @@ export async function syncTable<
     to: string;
     pk: PK;
     timestampColumn?: UC;
-    delaySeconds: number;
+    delaySeconds?: number;
   },
 ) {
   // Type assertion: Ensure that Schema[T] extends HasUpdatedAt
@@ -51,7 +51,7 @@ export async function syncTable<
       const udColumn = (spec.timestampColumn || 'updated_at') as unknown as TableWhere[0];
       let completeQuery = baseQuery
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .where(udColumn, '<', sql<any>`NOW() - INTERVAL \'1 SECOND\' * ${spec.delaySeconds}`)
+        .where(udColumn, '<', sql<any>`NOW() - INTERVAL \'1 SECOND\' * ${spec.delaySeconds || 60}`)
       // Too complicated to figure out how to get this type to be accurate. But it is.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if (bookmark?.rowTimestamp && bookmark?.rowId) {
