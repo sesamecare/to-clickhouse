@@ -77,7 +77,7 @@ export async function syncTable<
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         rowId: (row as any)[spec.pk],
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        rowTimestamp: (row as any).updated_at,
+        rowTimestamp: (row as any)[spec.timestampColumn || 'updated_at'],
       };
     },
     clickhouse: ch,
