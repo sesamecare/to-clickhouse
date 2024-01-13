@@ -4,9 +4,9 @@ import type { ClickHouseClient } from '@clickhouse/client';
 import type { Bookmark } from '../types';
 import { synchronizeTable } from '../stream-copy';
 
-interface HasUpdatedAt {
-  updated_at: Date;
-}
+type HasUpdatedAt<ColName extends string> = {
+  [K in ColName]: Date;
+};
 
 // Some types are too complicated to figure out how to match in kysely. Give up once.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -23,6 +23,7 @@ export async function syncTable<
   T extends keyof Schema & string,
   PK extends AnyColumn<Schema, T>,
   PKT extends string | number = Schema[T][PK] extends string | number ? Schema[T][PK] : never,
+  UC extends string = 'updated_at',
 >(
   db: Kysely<Schema>,
   ch: ClickHouseClient,
@@ -31,12 +32,13 @@ export async function syncTable<
     from: T;
     to: string;
     pk: PK;
+    updatedCol: UC;
     delaySeconds: number;
   },
 ) {
   // Type assertion: Ensure that Schema[T] extends HasUpdatedAt
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  type AssertSchema = Schema[T] extends HasUpdatedAt ? Schema[T] : never;
+  type AssertSchema = Schema[T] extends HasUpdatedAt<UC> ? Schema[T] : never;
 
   const baseQuery = db
     .selectFrom(spec.from)
@@ -46,7 +48,7 @@ export async function syncTable<
     getRows(bookmark, limit) {
       type TableWhere = Parameters<typeof baseQuery['where']>;
       const pkColumn = spec.pk as unknown as TableWhere[0];
-      const udColumn = 'updated_at' as unknown as TableWhere[0];
+      const udColumn = spec.updatedCol as unknown as TableWhere[0];
       let completeQuery = baseQuery
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .where(udColumn, '<', sql<any>`NOW() - INTERVAL \'1 SECOND\' * ${spec.delaySeconds}`)
