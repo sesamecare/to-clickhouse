@@ -32,7 +32,7 @@ export async function syncTable<
     from: T;
     to: string;
     pk: PK;
-    updatedCol: UC;
+    updatedCol?: UC;
     delaySeconds: number;
   },
 ) {
