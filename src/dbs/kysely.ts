@@ -1,7 +1,7 @@
 import { type Kysely, type AnyColumn, sql } from 'kysely';
 import type { ClickHouseClient } from '@clickhouse/client';
 
-import type { Bookmark } from '../types';
+import type { Bookmark, ClickhouseRowRecord, SourceDatabaseRowRecord } from '../types';
 import { synchronizeTable } from '../stream-copy';
 
 type HasUpdatedAt<ColName extends string> = {
@@ -34,6 +34,7 @@ export async function syncTable<
     pk: PK;
     timestampColumn?: UC;
     delaySeconds?: number;
+    rowMapper?: (row: Schema[T]) => ClickhouseRowRecord;
   },
 ) {
   // Type assertion: Ensure that Schema[T] extends HasUpdatedAt
@@ -45,6 +46,7 @@ export async function syncTable<
     .selectAll();
 
   return synchronizeTable({
+    rowMapper: spec.rowMapper as (row: SourceDatabaseRowRecord) => ClickhouseRowRecord,
     getRows(bookmark, limit) {
       type TableWhere = Parameters<typeof baseQuery['where']>;
       const pkColumn = spec.pk as unknown as TableWhere[0];

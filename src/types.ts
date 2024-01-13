@@ -4,6 +4,8 @@ import { ClickHouseClient, InsertResult } from '@clickhouse/client';
 
 export type SourceDatabaseRowRecord = Record<string, unknown>;
 
+export type ClickhouseRowRecord = Record<string, unknown>;
+
 export interface Bookmark<PK extends string | number> {
   rowId?: PK;
   rowTimestamp?: Date | null;
@@ -19,6 +21,7 @@ interface BaseTableSyncSpec<T extends SourceDatabaseRowRecord, PK extends string
   getBookmark(row: T): Bookmark<PK>;
   // Defaults to 10,000 but if you want precise control over the select size, you can set it here
   pageSize?: number;
+  rowMapper?: (row: T) => ClickhouseRowRecord;
 }
 
 interface InsertTableSyncSpec<T extends SourceDatabaseRowRecord, PK extends string | number> extends BaseTableSyncSpec<T, PK> {
