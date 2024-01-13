@@ -21,7 +21,8 @@ interface BaseTableSyncSpec<T extends SourceDatabaseRowRecord, PK extends string
   getBookmark(row: T): Bookmark<PK>;
   // Defaults to 10,000 but if you want precise control over the select size, you can set it here
   pageSize?: number;
-  rowMapper?: (row: T) => ClickhouseRowRecord;
+  // I would prefer this was row: T, but it just complicates the type system too much
+  rowMapper?: (row: SourceDatabaseRowRecord) => ClickhouseRowRecord;
 }
 
 interface InsertTableSyncSpec<T extends SourceDatabaseRowRecord, PK extends string | number> extends BaseTableSyncSpec<T, PK> {

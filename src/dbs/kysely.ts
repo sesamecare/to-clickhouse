@@ -34,7 +34,7 @@ export async function syncTable<
     pk: PK;
     timestampColumn?: UC;
     delaySeconds?: number;
-    rowMapper?: (row: Schema[T]) => ClickhouseRowRecord;
+    rowMapper?: (row: SourceDatabaseRowRecord) => ClickhouseRowRecord;
   },
 ) {
   // Type assertion: Ensure that Schema[T] extends HasUpdatedAt
@@ -108,6 +108,7 @@ export async function copyTable<
     to: string;
     pk: PK;
     optimize: boolean;
+    rowMapper?: (row: SourceDatabaseRowRecord) => ClickhouseRowRecord;
   },
 ) {
   const baseQuery = db.selectFrom(spec.from).selectAll();
