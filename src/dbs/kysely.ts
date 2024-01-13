@@ -35,6 +35,7 @@ export async function syncTable<
     timestampColumn?: UC;
     delaySeconds?: number;
     rowMapper?: (row: SourceDatabaseRowRecord) => ClickhouseRowRecord;
+    optimize?: boolean;
   },
 ) {
   // Type assertion: Ensure that Schema[T] extends HasUpdatedAt
@@ -45,7 +46,7 @@ export async function syncTable<
     .selectFrom(spec.from)
     .selectAll();
 
-  return synchronizeTable({
+  const syncResult = synchronizeTable({
     rowMapper: spec.rowMapper as (row: SourceDatabaseRowRecord) => ClickhouseRowRecord,
     getRows(bookmark, limit) {
       type TableWhere = Parameters<typeof baseQuery['where']>;
@@ -85,6 +86,10 @@ export async function syncTable<
     clickhouse: ch,
     tableName: spec.to,
   }, bookmark);
+  if (spec.optimize !== false) {
+    await ch.command({ query: `OPTIMIZE TABLE ${spec.to} FINAL` });
+  }
+  return syncResult;
 }
 
 /**
