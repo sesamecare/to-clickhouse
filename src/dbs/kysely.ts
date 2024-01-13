@@ -48,7 +48,7 @@ export async function syncTable<
     getRows(bookmark, limit) {
       type TableWhere = Parameters<typeof baseQuery['where']>;
       const pkColumn = spec.pk as unknown as TableWhere[0];
-      const udColumn = spec.updatedCol as unknown as TableWhere[0];
+      const udColumn = (spec.updatedCol || 'updated_at') as unknown as TableWhere[0];
       let completeQuery = baseQuery
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .where(udColumn, '<', sql<any>`NOW() - INTERVAL \'1 SECOND\' * ${spec.delaySeconds}`)
