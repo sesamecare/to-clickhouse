@@ -1,7 +1,7 @@
 import { type Kysely, type AnyColumn, sql } from 'kysely';
 import type { ClickHouseClient } from '@clickhouse/client';
 
-import type { Bookmark, ClickhouseRowRecord, SourceDatabaseRowRecord } from '../types';
+import type { Bookmark, ClickhouseRowRecord, RowMapper, SourceDatabaseRowRecord } from '../types';
 import { synchronizeTable } from '../stream-copy';
 
 type HasUpdatedAt<ColName extends string> = {
@@ -34,7 +34,7 @@ export async function syncTable<
     pk: PK;
     timestampColumn?: UC;
     delaySeconds?: number;
-    rowMapper?: (row: SourceDatabaseRowRecord) => ClickhouseRowRecord;
+    rowMapper?: RowMapper;
     optimize?: boolean;
   },
 ) {
@@ -113,7 +113,7 @@ export async function copyTable<
     to: string;
     pk: PK;
     optimize: boolean;
-    rowMapper?: (row: SourceDatabaseRowRecord) => ClickhouseRowRecord;
+    rowMapper?: RowMapper;
   },
 ) {
   const baseQuery = db.selectFrom(spec.from).selectAll();
@@ -151,4 +151,76 @@ export async function copyTable<
     await ch.command({ query: `OPTIMIZE TABLE ${spec.to} FINAL` });
   }
   return result;
+}
+
+/**
+ * Synchronize multiple tables with simpler syntax.
+ */
+export class KyselySyncContext<Schema, B extends Record<string, Bookmark<string> | Bookmark<number>>> {
+  // Log function that can be overridden
+  log: (level: 'info' | 'error', message: string, meta?: Record<string, unknown>) => void = () => { };
+  // The default name of the created_at column
+  createdAtColumn = 'created_at';
+  // The default name of the updated_at column
+  updatedAtColumn = 'updated_at';
+  // The default name of the primary key column based on the table name (the default strips a plural 's' from the end and adds _id)
+  getDefaultPrimaryKeyColumn = (table: string) => `${table.slice(0, -1)}_id`;
+
+  constructor(
+    private readonly db: Kysely<Schema>,
+    private readonly clickhouse: ClickHouseClient,
+    private readonly bookmark?: B,
+  ) { }
+
+  async table<T extends keyof Schema & string>(table: T, opts: {
+    pk?: AnyColumn<Schema, T>,
+    timestampColumn?: AnyColumn<Schema, T>,
+  }) {
+    const { pk, timestampColumn } = opts;
+    return syncTable(
+      this.db,
+      this.clickhouse,
+      (this.bookmark?.[table as keyof B] || {}) as Bookmark<string | number>,
+      {
+        from: table,
+        to: table,
+        pk: (pk || this.getDefaultPrimaryKeyColumn(table)) as AnyColumn<Schema, T>,
+        optimize: true,
+        timestampColumn,
+      })
+      .then((result) => {
+        this.log('info', 'Sync complete', { table, rows: result.rows });
+        return [table, { ...result.bookmark, lastCount: result.rows }];
+      })
+      .catch((error) => {
+        this.log('error', 'Failed to copy table', { table, error });
+        throw error;
+      });
+  }
+
+  /**
+   * Sync a table that only gets additions, no updates (or update tracking)
+   */
+  async forwardOnly<T extends keyof Schema & string>(table: T, opts?: {
+    pk?: AnyColumn<Schema, T>,
+    rowMapper?: RowMapper,
+  }) {
+    return this.table(table, {
+      timestampColumn: this.createdAtColumn as AnyColumn<Schema, T>,
+      ...opts,
+    });
+  }
+
+  /**
+   * Sync a table that tracks its updates with an updated_at column
+   */
+  async withUpdatedAt<T extends keyof Schema & string>(table: T, opts?: {
+    pk?: AnyColumn<Schema, T>,
+    rowMapper?: RowMapper,
+  }) {
+    return this.table(table, {
+      timestampColumn: this.updatedAtColumn as AnyColumn<Schema, T>,
+      ...opts,
+    });
+  }
 }

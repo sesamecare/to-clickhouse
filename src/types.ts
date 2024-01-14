@@ -13,6 +13,8 @@ export interface Bookmark<PK extends string | number> {
 
 export type RowFetchFunction<T, PK extends string | number> = (bookmark: Bookmark<PK>, limit: number) => AsyncIterableIterator<T>;
 
+export type RowMapper = (row: SourceDatabaseRowRecord) => ClickhouseRowRecord;
+
 interface BaseTableSyncSpec<T extends SourceDatabaseRowRecord, PK extends string | number> {
   // Define a function that gets rows from the table in a stable order of your choosing,
   // returning a maximum of `limit` rows. If you return limit rows, the caller will assume
@@ -22,7 +24,7 @@ interface BaseTableSyncSpec<T extends SourceDatabaseRowRecord, PK extends string
   // Defaults to 10,000 but if you want precise control over the select size, you can set it here
   pageSize?: number;
   // I would prefer this was row: T, but it just complicates the type system too much
-  rowMapper?: (row: SourceDatabaseRowRecord) => ClickhouseRowRecord;
+  rowMapper?: RowMapper;
 }
 
 interface InsertTableSyncSpec<T extends SourceDatabaseRowRecord, PK extends string | number> extends BaseTableSyncSpec<T, PK> {
