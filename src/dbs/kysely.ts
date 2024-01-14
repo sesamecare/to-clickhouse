@@ -1,7 +1,7 @@
 import { type Kysely, type AnyColumn, sql } from 'kysely';
 import type { ClickHouseClient } from '@clickhouse/client';
 
-import type { Bookmark, ClickhouseRowRecord, RowMapper, SourceDatabaseRowRecord } from '../types';
+import type { Bookmark, ClickhouseRowRecord, RowMapper, SourceDatabaseRowRecord, SyncResult } from '../types';
 import { synchronizeTable } from '../stream-copy';
 
 type HasUpdatedAt<ColName extends string> = {
@@ -156,7 +156,7 @@ export async function copyTable<
 /**
  * Synchronize multiple tables with simpler syntax.
  */
-export class KyselySyncContext<Schema, B extends Record<string, Bookmark<string> | Bookmark<number>>> {
+export class KyselySyncContext<Schema, B extends Partial<Record<keyof Schema, Bookmark<string> | Bookmark<number>>>> {
   // Log function that can be overridden
   log: (level: 'info' | 'error', message: string, meta?: Record<string, unknown>) => void = () => { };
   // The default name of the created_at column
@@ -165,6 +165,11 @@ export class KyselySyncContext<Schema, B extends Record<string, Bookmark<string>
   updatedAtColumn = 'updated_at';
   // The default name of the primary key column based on the table name (the default strips a plural 's' from the end and adds _id)
   getDefaultPrimaryKeyColumn = (table: string) => `${table.slice(0, -1)}_id`;
+
+  // This will be filled out with the results of the syncs in such a way that it can be used
+  // as a collective bookmark for the next sync. You can also get the individual bookmarks
+  // from the return value of the individual functions.
+  results = {} as Record<string, Bookmark<string | number>>;
 
   constructor(
     private readonly db: Kysely<Schema>,
@@ -175,7 +180,7 @@ export class KyselySyncContext<Schema, B extends Record<string, Bookmark<string>
   async table<T extends keyof Schema & string>(table: T, opts: {
     pk?: AnyColumn<Schema, T>,
     timestampColumn?: AnyColumn<Schema, T>,
-  }) {
+  }): Promise<SyncResult<T, string | number>> {
     const { pk, timestampColumn } = opts;
     return syncTable(
       this.db,
@@ -190,7 +195,12 @@ export class KyselySyncContext<Schema, B extends Record<string, Bookmark<string>
       })
       .then((result) => {
         this.log('info', 'Sync complete', { table, rows: result.rows });
-        return [table, { ...result.bookmark, lastCount: result.rows }];
+        const newBookmark = { ...result.bookmark, lastCount: result.rows };
+        this.results[table as string] = newBookmark;
+        return {
+          table,
+          bookmark: newBookmark,
+        };
       })
       .catch((error) => {
         this.log('error', 'Failed to copy table', { table, error });

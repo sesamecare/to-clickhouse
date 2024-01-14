@@ -9,6 +9,12 @@ export type ClickhouseRowRecord = Record<string, unknown>;
 export interface Bookmark<PK extends string | number> {
   rowId?: PK;
   rowTimestamp?: Date | null;
+  lastCount?: number;
+}
+
+export interface SyncResult<T extends string, PK extends string | number> {
+  table: T;
+  bookmark: Bookmark<PK>;
 }
 
 export type RowFetchFunction<T, PK extends string | number> = (bookmark: Bookmark<PK>, limit: number) => AsyncIterableIterator<T>;
@@ -20,7 +26,7 @@ interface BaseTableSyncSpec<T extends SourceDatabaseRowRecord, PK extends string
   // returning a maximum of `limit` rows. If you return limit rows, the caller will assume
   // there may be more, and call you again with a new bookmark
   getRows: RowFetchFunction<T, PK>;
-  getBookmark(row: T): Bookmark<PK>;
+  getBookmark(row: T): Omit<Bookmark<PK>, 'lastCount'>;
   // Defaults to 10,000 but if you want precise control over the select size, you can set it here
   pageSize?: number;
   // I would prefer this was row: T, but it just complicates the type system too much
