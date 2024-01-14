@@ -180,8 +180,9 @@ export class KyselySyncContext<Schema, B extends Partial<Record<keyof Schema, Bo
   async table<T extends keyof Schema & string>(table: T, opts: {
     pk?: AnyColumn<Schema, T>,
     timestampColumn?: AnyColumn<Schema, T>,
+    rowMapper?: RowMapper,
   }): Promise<SyncResult<T, string | number>> {
-    const { pk, timestampColumn } = opts;
+    const { pk, timestampColumn, rowMapper } = opts;
     return syncTable(
       this.db,
       this.clickhouse,
@@ -192,6 +193,7 @@ export class KyselySyncContext<Schema, B extends Partial<Record<keyof Schema, Bo
         pk: (pk || this.getDefaultPrimaryKeyColumn(table)) as AnyColumn<Schema, T>,
         optimize: true,
         timestampColumn,
+        rowMapper,
       })
       .then((result) => {
         this.log('info', 'Sync complete', { table, rows: result.rows });
