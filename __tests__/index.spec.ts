@@ -48,7 +48,7 @@ describe('move tables from postgres to clickhouse', () => {
       },
       insert(stream) {
         return ch.insert({
-          table: 'identity__address_types',
+          table: 'address_types',
           values: stream,
           format: 'JSONEachRow',
         });
@@ -75,7 +75,7 @@ describe('move tables from postgres to clickhouse', () => {
         };
       },
       clickhouse: ch,
-      tableName: 'identity__address_types',
+      tableName: 'address_types',
     }, {});
     expect(detail.rows).toBe(2);
   });

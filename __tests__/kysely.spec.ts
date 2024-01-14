@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, test } from 'vitest';
 import { ClickHouseClient } from '@clickhouse/client';
 import { Kysely } from 'kysely';
 
-import { copyTable, syncTable } from '../src/dbs/kysely';
+import { KyselySyncContext, copyTable, syncTable } from '../src/dbs/kysely';
 
 import { createChDb, createPgDb } from './db.fixtures';
 import { kyselyDb } from './kysely.fixtures';
@@ -30,14 +30,14 @@ describe('simple kysely interface', () => {
   test('should sync to clickhouse', async () => {
     const detail = await copyTable(db, ch, {}, {
       from: 'address_types',
-      to: 'identity__address_types',
+      to: 'address_types',
       pk: 'address_type_id',
     });
     expect(detail.rows).toBe(2);
 
     const indSpec = {
       from: 'individuals',
-      to: 'identity__individuals',
+      to: 'individuals',
       pk: 'individual_id',
       delaySeconds: 0,
     } as const;
@@ -61,5 +61,56 @@ describe('simple kysely interface', () => {
 
     const upd2 = await syncTable(db, ch, upd.bookmark, indSpec);
     expect(upd2.rows, 'Copy 2 rows after second update').toBe(2);
+  });
+
+  test('should sync to clickhouse with simplified syntax', async () => {
+    await db.insertInto('individuals')
+      .columns(['updated_at'])
+      .values([{
+        updated_at: new Date('2024-01-01T00:00:00.000Z'),
+      }])
+      .execute();
+    let context = new KyselySyncContext(db, ch, {});
+    await Promise.all([
+      context.forwardOnly('address_types'),
+      context.withUpdatedAt('individuals'),
+    ]);
+    expect(context.results).toMatchInlineSnapshot(`
+      {
+        "address_types": {
+          "lastCount": 2,
+          "rowId": 2,
+        },
+        "individuals": {
+          "lastCount": 4,
+          "rowId": "4",
+          "rowTimestamp": "2024-01-01T00:00:00.000",
+        },
+      }
+    `);
+    context = new KyselySyncContext(db, ch, context.results);
+    const secondPass = await Promise.all([
+      context.forwardOnly('address_types'),
+      context.withUpdatedAt('individuals'),
+    ]);
+    expect(secondPass).toMatchInlineSnapshot(`
+      [
+        {
+          "bookmark": {
+            "lastCount": 0,
+            "rowId": 2,
+          },
+          "table": "address_types",
+        },
+        {
+          "bookmark": {
+            "lastCount": 1,
+            "rowId": "4",
+            "rowTimestamp": "2024-01-01T00:00:00.000",
+          },
+          "table": "individuals",
+        },
+      ]
+    `);
   });
 });

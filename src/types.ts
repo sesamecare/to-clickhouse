@@ -12,11 +12,6 @@ export interface Bookmark<PK extends string | number> {
   lastCount?: number;
 }
 
-export interface SyncResult<T extends string, PK extends string | number> {
-  table: T;
-  bookmark: Bookmark<PK>;
-}
-
 export type RowFetchFunction<T, PK extends string | number> = (bookmark: Bookmark<PK>, limit: number) => AsyncIterableIterator<T>;
 
 export type RowMapper = (row: SourceDatabaseRowRecord) => ClickhouseRowRecord;
