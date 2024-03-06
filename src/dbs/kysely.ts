@@ -204,7 +204,7 @@ export class KyselySyncContext<Schema, B extends Partial<Record<keyof Schema, Bo
         };
       })
       .catch((error) => {
-        this.log('error', 'Failed to copy table', { table, error });
+        this.log('error', `Failed to copy table ${table}`, { table, error });
         throw error;
       });
   }
@@ -240,7 +240,7 @@ export class KyselySyncContext<Schema, B extends Partial<Record<keyof Schema, Bo
         };
       })
       .catch((error) => {
-        this.log('error', 'Failed to sync table', { table, error });
+        this.log('error', `Failed to sync table ${table}`, { table, error });
         throw error;
       });
   }
