@@ -5,7 +5,7 @@ import { sql_queries, sql_sets } from './sql-queries';
 import { NodeClickHouseClientConfigOptions } from '@clickhouse/client/dist/client';
 
 export function createDatabase(clickhouse: ClickHouseClient, database: string, { engine = 'Atomic' }: { engine?: string }) {
-  return clickhouse.exec({
+  return clickhouse.command({
     query: `CREATE DATABASE IF NOT EXISTS ${database} ENGINE = ${engine}`,
     clickhouse_settings: {
       wait_end_of_query: 1,
@@ -24,7 +24,7 @@ export async function initializeMigrationTable(clickhouse: ClickHouseClient) {
   ENGINE = MergeTree
   ORDER BY tuple(applied_at)`;
 
-  return clickhouse.exec({
+  return clickhouse.command({
     query: q,
     clickhouse_settings: {
       wait_end_of_query: 1,
@@ -92,7 +92,7 @@ export async function applyMigrations(clickhouse: ClickHouseClient, migrations: 
 
     for (const query of queries) {
       try {
-        await clickhouse.exec({
+        await clickhouse.command({
           query: query,
           clickhouse_settings: sets,
         });
