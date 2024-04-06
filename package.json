@@ -57,25 +57,25 @@
     "@openapi-typescript-infra/coconfig": "^4.3.0",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/github": "^10.0.2",
-    "@types/node": "^20.11.30",
+    "@types/node": "^20.12.5",
     "@types/pg": "^8.11.4",
     "@types/pg-cursor": "^2.7.2",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
-    "coconfig": "^1.4.1",
+    "coconfig": "^1.5.2",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
     "kysely": "^0.27.3",
-    "kysely-codegen": "^0.14.1",
-    "pg": "^8.11.3",
-    "pg-cursor": "^2.10.3",
+    "kysely-codegen": "^0.14.2",
+    "pg": "^8.11.5",
+    "pg-cursor": "^2.10.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.3",
+    "typescript": "^5.4.4",
     "vitest": "^1.4.0"
   },
   "dependencies": {
-    "@clickhouse/client": "^0.3.0"
+    "@clickhouse/client": "^1.0.1"
   }
 }

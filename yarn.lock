@@ -40,19 +40,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@clickhouse/client-common@npm:0.3.0":
-  version: 0.3.0
-  resolution: "@clickhouse/client-common@npm:0.3.0"
-  checksum: 03e365c3afbb9351bf2e3cf2ad24fa753e48173f331149249e9eed88ef5891c223cfe6220c194738f2d4224eee7225322d49a639e5d7c21f9febb75551e686f4
+"@clickhouse/client-common@npm:1.0.1":
+  version: 1.0.1
+  resolution: "@clickhouse/client-common@npm:1.0.1"
+  checksum: 140420369fc5b4f466d446ec77b7e87ea4780424478a7bf50c29c63fa1573a005a05065e0fa4dc491260a0a238ea0f05edf09cc993eb3593f53b724346a1772f
   languageName: node
   linkType: hard
 
-"@clickhouse/client@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "@clickhouse/client@npm:0.3.0"
+"@clickhouse/client@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@clickhouse/client@npm:1.0.1"
   dependencies:
-    "@clickhouse/client-common": 0.3.0
-  checksum: 99892a94dd19aa799f468c142b1c591f1b1fe8a99b55433df361f0de7ce682cabeb4ad408c8790762eacf8fd9cf3be81a974b989fabbd821e343231a3ecc6f3c
+    "@clickhouse/client-common": 1.0.1
+  checksum: 75927be4fe45c829ac83af22a4c09568d2076b3d419da3a234b8bf2d131703605c30d340967cbfb327dacd2f27ec9397e73017ef2ead4d1ad4cf7ed3472d8960
   languageName: node
   linkType: hard
 
@@ -670,26 +670,26 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@sesamecare-oss/to-clickhouse@workspace:."
   dependencies:
-    "@clickhouse/client": ^0.3.0
+    "@clickhouse/client": ^1.0.1
     "@openapi-typescript-infra/coconfig": ^4.3.0
     "@semantic-release/exec": ^6.0.3
     "@semantic-release/github": ^10.0.2
-    "@types/node": ^20.11.30
+    "@types/node": ^20.12.5
     "@types/pg": ^8.11.4
     "@types/pg-cursor": ^2.7.2
     "@typescript-eslint/eslint-plugin": ^6.21.0
     "@typescript-eslint/parser": ^6.21.0
-    coconfig: ^1.4.1
+    coconfig: ^1.5.2
     eslint: ^8.57.0
     eslint-config-prettier: ^9.1.0
     eslint-import-resolver-typescript: ^3.6.1
     eslint-plugin-import: ^2.29.1
     kysely: ^0.27.3
-    kysely-codegen: ^0.14.1
-    pg: ^8.11.3
-    pg-cursor: ^2.10.3
+    kysely-codegen: ^0.14.2
+    pg: ^8.11.5
+    pg-cursor: ^2.10.5
     ts-node: ^10.9.2
-    typescript: ^5.4.3
+    typescript: ^5.4.4
     vitest: ^1.4.0
   dependenciesMeta:
     kysely:
@@ -760,12 +760,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^20.11.30":
-  version: 20.11.30
-  resolution: "@types/node@npm:20.11.30"
+"@types/node@npm:*, @types/node@npm:^20.12.5":
+  version: 20.12.5
+  resolution: "@types/node@npm:20.12.5"
   dependencies:
     undici-types: ~5.26.4
-  checksum: 7597767aa3e44b0f1bf62efa522dd17741135f283c11de6a20ead8bb7016fb4999cc30adcd8f2bb29ebb216906c92894346ccd187de170927dc1e212d2c07c81
+  checksum: 38358c091392bb3def1136772ada4ccd39a9429d459160b5ab728b690d2f15f2212eafd9e65ce716e270f70a4e6927ebffccfefc08dabdf68f4016c1fc8a7938
   languageName: node
   linkType: hard
 
@@ -1266,13 +1266,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"buffer-writer@npm:2.0.0":
-  version: 2.0.0
-  resolution: "buffer-writer@npm:2.0.0"
-  checksum: 11736b48bb75106c52ca8ec9f025e7c1b3b25ce31875f469d7210eabd5c576c329e34f6b805d4a8d605ff3f0db1e16342328802c4c963e9c826b0e43a4e631c2
-  languageName: node
-  linkType: hard
-
 "cac@npm:^6.7.14":
   version: 6.7.14
   resolution: "cac@npm:6.7.14"
@@ -1386,9 +1379,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"coconfig@npm:^1.4.1":
-  version: 1.4.1
-  resolution: "coconfig@npm:1.4.1"
+"coconfig@npm:^1.5.2":
+  version: 1.5.2
+  resolution: "coconfig@npm:1.5.2"
   dependencies:
     dotgitignore: ^2.1.0
     find-up: ^4.1.0
@@ -1401,7 +1394,7 @@ __metadata:
       optional: true
   bin:
     coconfig: build/bin/cli.js
-  checksum: 946f5a41ff97ae90180c23e59610cc3c455ef42bf252f2d45d7f42a3de393bb570f9d6f3c508380c7b9dddaa12e793762815e51a6cb98419fb40f1d9b593ff98
+  checksum: 0a055938ae4fb02d6b62d0fb029adf07a0a89d292df177cc45c2f078ceb268368e4808c5271f50965afb0e7f3711a8f096dc98a0e37d44e1c5787239696fc4b8
   languageName: node
   linkType: hard
 
@@ -2969,9 +2962,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"kysely-codegen@npm:^0.14.1":
-  version: 0.14.1
-  resolution: "kysely-codegen@npm:0.14.1"
+"kysely-codegen@npm:^0.14.2":
+  version: 0.14.2
+  resolution: "kysely-codegen@npm:0.14.2"
   dependencies:
     chalk: 4.1.2
     dotenv: ^16.4.5
@@ -3010,7 +3003,7 @@ __metadata:
       optional: true
   bin:
     kysely-codegen: dist/cli/bin.js
-  checksum: f93b5deba99471dc672860a76bc8d34e59f142b098aef5d7ded967ad1d2dfa149efc74d29f809cc3e309e5120d1fd685104aea2afa917758c80e1a01fc023990
+  checksum: 385e7dde3d43bcd1b5b08a53dc4215d3cc1a18b8dd959ee75509a5e3b57bf5b93f3fd93c7198fc6391e9f24e91a283b2644e259ec9a88fea66a6925a9e212082
   languageName: node
   linkType: hard
 
@@ -3677,13 +3670,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"packet-reader@npm:1.0.0":
-  version: 1.0.0
-  resolution: "packet-reader@npm:1.0.0"
-  checksum: 0b7516f0cbf3e322aad591bed29ba544220088c53943145c0d9121a6f59182ad811f7fd6785a8979a34356aca69d97653689029964c5998dc02645633d88ffd7
-  languageName: node
-  linkType: hard
-
 "parent-module@npm:^1.0.0":
   version: 1.0.1
   resolution: "parent-module@npm:1.0.1"
@@ -3792,19 +3778,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-connection-string@npm:^2.6.2":
-  version: 2.6.2
-  resolution: "pg-connection-string@npm:2.6.2"
-  checksum: 22265882c3b6f2320785378d0760b051294a684989163d5a1cde4009e64e84448d7bf67d9a7b9e7f69440c3ee9e2212f9aa10dd17ad6773f6143c6020cebbcb5
+"pg-connection-string@npm:^2.6.4":
+  version: 2.6.4
+  resolution: "pg-connection-string@npm:2.6.4"
+  checksum: 2c1d2ac1add1f93076f1594d217a0980f79add05dc48de6363e1c550827c78a6ee3e3b5420da9c54858f6b678cdb348aed49732ee68158b6cdb70f1d1c748cf9
   languageName: node
   linkType: hard
 
-"pg-cursor@npm:^2.10.3":
-  version: 2.10.3
-  resolution: "pg-cursor@npm:2.10.3"
+"pg-cursor@npm:^2.10.5":
+  version: 2.10.5
+  resolution: "pg-cursor@npm:2.10.5"
   peerDependencies:
     pg: ^8
-  checksum: 86dd66c4bf70da5272eb60d485a60f4216ebbffe2b7d314fe18a28a0cadf9b0d056d2291e0f108ed413be185818c2e82105bf290bf98fc91f73c52e4d0de42b8
+  checksum: 355d2ab04f87ec8c345894836ef211b8445e9f52c539944fe2641a5f1a10100da3b6e7b383fc6005f1cf554267453eeb2de287475fadde8417f83b8cdd5a7894
   languageName: node
   linkType: hard
 
@@ -3822,19 +3808,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-pool@npm:^3.6.1":
-  version: 3.6.1
-  resolution: "pg-pool@npm:3.6.1"
+"pg-pool@npm:^3.6.2":
+  version: 3.6.2
+  resolution: "pg-pool@npm:3.6.2"
   peerDependencies:
     pg: ">=8.0"
-  checksum: 8a6513e6f74a794708c9dd16d2ccda0debadc56435ec2582de2b2e35b01315550c5dab8a0a9a2a16f4adce45523228f5739940fb7687ec7e9c300f284eb08fd1
+  checksum: 5ceee4320a35fce08777d085d50a30a1253574257e1e7c5c56c915056d387d340f797115580c8d90a46691f83c39a9b4da1fd810d9ad168cc455c79c289116f4
   languageName: node
   linkType: hard
 
-"pg-protocol@npm:*, pg-protocol@npm:^1.6.0":
-  version: 1.6.0
-  resolution: "pg-protocol@npm:1.6.0"
-  checksum: e12662d2de2011e0c3a03f6a09f435beb1025acdc860f181f18a600a5495dc38a69d753bbde1ace279c8c442536af9c1a7c11e1d0fe3fad3aa1348b28d9d2683
+"pg-protocol@npm:*, pg-protocol@npm:^1.6.1":
+  version: 1.6.1
+  resolution: "pg-protocol@npm:1.6.1"
+  checksum: cce3f72cc4bdc04db9ce3fa38b2c45b745f0a95a925847b349087f52c02c4d51b7c74d8867e40639699d0c7609accfaffb6b1d221b3268d2bdc4bb8d6a2995a3
   languageName: node
   linkType: hard
 
@@ -3866,16 +3852,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg@npm:^8.11.3":
-  version: 8.11.3
-  resolution: "pg@npm:8.11.3"
+"pg@npm:^8.11.5":
+  version: 8.11.5
+  resolution: "pg@npm:8.11.5"
   dependencies:
-    buffer-writer: 2.0.0
-    packet-reader: 1.0.0
     pg-cloudflare: ^1.1.1
-    pg-connection-string: ^2.6.2
-    pg-pool: ^3.6.1
-    pg-protocol: ^1.6.0
+    pg-connection-string: ^2.6.4
+    pg-pool: ^3.6.2
+    pg-protocol: ^1.6.1
     pg-types: ^2.1.0
     pgpass: 1.x
   peerDependencies:
@@ -3886,7 +3870,7 @@ __metadata:
   peerDependenciesMeta:
     pg-native:
       optional: true
-  checksum: 8af9468b8969fa0d73a6b349216c8cbc953d938fcae5594f2d24043060e9226a072c8085fc4230172b5576fcab4c39c8563c655f271dc2a9209b6ad5370cafe5
+  checksum: 2317bcc7080f116ced761620b8cbc98175080cacf1e8a894e14f468bcd9c996a7bd5ef36c9db91d380a772667508eb72c42b10206a90cd82b0b4a7669a19f9e4
   languageName: node
   linkType: hard
 
@@ -4827,23 +4811,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.4.3":
-  version: 5.4.3
-  resolution: "typescript@npm:5.4.3"
+"typescript@npm:^5.4.4":
+  version: 5.4.4
+  resolution: "typescript@npm:5.4.4"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: d74d731527e35e64d8d2dcf2f897cf8cfbc3428be0ad7c48434218ba4ae41239f53be7c90714089db1068c05cae22436af2ecba71fd36ecc5e7a9118af060198
+  checksum: a7b54515d2adfc75c8d14188af0216b6b9ae3c192c9732797c24b1d14608eac1c83be7b1c65ce6f4ced0f2c40583f11b495fe1ba3d982afadbcc523517d183c8
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^5.4.3#~builtin<compat/typescript>":
-  version: 5.4.3
-  resolution: "typescript@patch:typescript@npm%3A5.4.3#~builtin<compat/typescript>::version=5.4.3&hash=5da071"
+"typescript@patch:typescript@^5.4.4#~builtin<compat/typescript>":
+  version: 5.4.4
+  resolution: "typescript@patch:typescript@npm%3A5.4.4#~builtin<compat/typescript>::version=5.4.4&hash=5da071"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 3a62fe90aa79d68c9ce38ea5edb2957e62801c733b99f0e5a2b8b50922761f68f7d9a40d28c544b449866e81185cddb93cba2496d0ff3fa52ef5b1f8bcace38c
+  checksum: 34e8fe6b892736204c6c72ae9e3027fb37f23e34cf748340712101cbe9c55527c379c4d275c407e5c66ff73eca56c7425b1fb4ac5b23dc7a62413cf6a8af98e8
   languageName: node
   linkType: hard
 

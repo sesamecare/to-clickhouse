@@ -1,8 +1,7 @@
 import fs from 'fs';
 import { createHash } from 'crypto';
-import { ClickHouseClient, createClient } from "@clickhouse/client";
+import { ClickHouseClient, ClickHouseClientConfigOptions, createClient } from "@clickhouse/client";
 import { sql_queries, sql_sets } from './sql-queries';
-import { NodeClickHouseClientConfigOptions } from '@clickhouse/client/dist/client';
 
 export function createDatabase(clickhouse: ClickHouseClient, database: string, { engine = 'Atomic' }: { engine?: string }) {
   return clickhouse.command({
@@ -49,7 +48,7 @@ export async function getMigrationsToApply(clickhouse: ClickHouseClient, migrati
     query: `SELECT version, checksum, migration_name FROM _migrations ORDER BY version`,
     format: 'JSONEachRow',
   })
-    .then((rz) => rz.json<CompletedMigration[]>())
+    .then((rz) => rz.json<CompletedMigration>())
     .then((rows) => rows.reduce((acc, row) => {
       acc[row.version] = row;
       return acc;
@@ -135,7 +134,7 @@ export function getMigrationsInDirectory(directory: string): Migration[] {
   return migrations.sort((a, b) => a.version - b.version);
 }
 
-export async function applyMigrationsInDirectory(config: NodeClickHouseClientConfigOptions & { database: string }, directory: string) {
+export async function applyMigrationsInDirectory(config: ClickHouseClientConfigOptions & { database: string }, directory: string) {
   const defaultDb = createClient({
     ...config,
     database: undefined,
