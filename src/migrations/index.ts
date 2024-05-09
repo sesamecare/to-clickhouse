@@ -145,7 +145,7 @@ export async function applyMigrationsInDirectory(config: ClickHouseClientConfigO
   const migrations = getMigrationsInDirectory(directory);
   const toApply = await getMigrationsToApply(targetDb, migrations);
   if (toApply.length > 0) {
-    return applyMigrations(targetDb, migrations);
+    return applyMigrations(targetDb, toApply);
   }
   return toApply.map((m) => m.filename);
 }
