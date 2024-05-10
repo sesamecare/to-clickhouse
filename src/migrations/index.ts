@@ -35,6 +35,7 @@ interface Migration {
   version: number;
   filename: string;
   commands: string;
+  checksum: string;
 }
 
 interface CompletedMigration {
@@ -63,11 +64,9 @@ export async function getMigrationsToApply(clickhouse: ClickHouseClient, migrati
   const appliedMigrations = [] as Migration[];
 
   for (const migration of migrations) {
-    const checksum = createHash('md5').update(migration.commands).digest('hex');
-
     if (alreadyAppliedMigrations[migration.version]) {
       // Check if migration file was not changed after apply.
-      if (alreadyAppliedMigrations[migration.version].checksum !== checksum) {
+      if (alreadyAppliedMigrations[migration.version].checksum !== migration.checksum) {
         throw new Error(`A migration file should't be changed after apply. Please, restore content of the ${alreadyAppliedMigrations[migration.version].migration_name
           } migrations.`)
       }
@@ -83,8 +82,6 @@ export async function getMigrationsToApply(clickhouse: ClickHouseClient, migrati
 
 export async function applyMigrations(clickhouse: ClickHouseClient, migrations: Migration[]) {
   for (const migration of migrations) {
-    const checksum = createHash('md5').update(migration.commands).digest('hex');
-
     // Extract sql from the migration.
     const queries = sql_queries(migration.commands);
     const sets = sql_sets(migration.commands);
@@ -105,7 +102,7 @@ ${(e as Error).message}`);
     try {
       await clickhouse.insert({
         table: '_migrations',
-        values: [{ version: migration.version, checksum: checksum, migration_name: migration.filename }],
+        values: [{ version: migration.version, checksum: migration.checksum, migration_name: migration.filename }],
         format: 'JSONEachRow',
       });
     } catch (e: unknown) {
@@ -128,6 +125,7 @@ export function getMigrationsInDirectory(directory: string): Migration[] {
       version,
       filename,
       commands,
+      checksum: createHash('md5').update(commands).digest('hex'),
     });
   });
 
