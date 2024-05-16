@@ -25,9 +25,10 @@ import { SourceDatabaseRowRecord, RowFetchFunction, Bookmark } from './types';
  * }
  */export function batchFetch<T extends SourceDatabaseRowRecord, PK extends string | number>(getRows: RowFetchFunction<T, PK>, getBookmark: (row: T) => Bookmark<PK>): RowFetchFunction<T, PK> {
   return async function* (bookmark, limit) {
-    let rowsThisRun = 0;
+    let rowsThisRun;
     let lastRow: T | undefined;
     do {
+      rowsThisRun = 0;
       for await (const row of getRows(lastRow ? getBookmark(lastRow) : bookmark, limit)) {
         rowsThisRun++;
         lastRow = row;

@@ -656,9 +656,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@semantic-release/github@npm:^10.0.3":
-  version: 10.0.3
-  resolution: "@semantic-release/github@npm:10.0.3"
+"@semantic-release/github@npm:^10.0.4":
+  version: 10.0.4
+  resolution: "@semantic-release/github@npm:10.0.4"
   dependencies:
     "@octokit/core": ^6.0.0
     "@octokit/plugin-paginate-rest": ^11.0.0
@@ -678,7 +678,7 @@ __metadata:
     url-join: ^5.0.0
   peerDependencies:
     semantic-release: ">=20.1.0"
-  checksum: 177ea0b978c3abff02689e409133ed952396f04829d4535a0634856d0a951bf74de1f0adf1151197d9022f97812c0f89166538b6754c623f5b04a2df3fb64f47
+  checksum: 396f36b5fe42aa01292ef9981625a13cf2f211141ac770447140e4a1afb569198c935737b3fc1eadef9089da192589f096a3eb20a9ffe3d69a7f0b845a3ce1b6
   languageName: node
   linkType: hard
 
@@ -689,8 +689,8 @@ __metadata:
     "@clickhouse/client": ^1.0.1
     "@openapi-typescript-infra/coconfig": ^4.4.0
     "@semantic-release/exec": ^6.0.3
-    "@semantic-release/github": ^10.0.3
-    "@types/node": ^20.12.11
+    "@semantic-release/github": ^10.0.4
+    "@types/node": ^20.12.12
     "@types/pg": ^8.11.6
     "@types/pg-cursor": ^2.7.2
     "@typescript-eslint/eslint-plugin": ^6.21.0
@@ -776,12 +776,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^20.12.11":
+"@types/node@npm:*":
   version: 20.12.11
   resolution: "@types/node@npm:20.12.11"
   dependencies:
     undici-types: ~5.26.4
   checksum: 0cc06bb69cd8150e96fcf65fa3d7f2eeebedf110a99e1834a7fa55bd6c04e7b6d73f74321a2acfc569ca300c0b88d8e1b702ce245b3802f6e5f6a8987fef451a
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^20.12.12":
+  version: 20.12.12
+  resolution: "@types/node@npm:20.12.12"
+  dependencies:
+    undici-types: ~5.26.4
+  checksum: 5373983874b9af7c216e7ca5d26b32a8d9829c703a69f1e66f2113598b5be8582c0e009ca97369f1ec9a6282b3f92812208d06eb1e9fc3bd9b939b022303d042
   languageName: node
   linkType: hard
 

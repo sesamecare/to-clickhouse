@@ -35,7 +35,7 @@ export async function createPgDb(db: string) {
 export function chdb(db: string) {
   return createClient({
     database: db,
-    host: process.env.CHHOST || 'http://localhost:8123',
+    url: process.env.CHHOST || 'http://localhost:8123',
     username: process.env.CHUSERNAME || 'default',
     password: process.env.CHPASSWORD || '',
   });
@@ -48,7 +48,7 @@ export async function createChDb(db: string) {
 
   // Create the clickhouse db and load the schema
   await applyMigrationsInDirectory({
-    host: process.env.CHHOST || 'http://localhost:8123',
+    url: process.env.CHHOST || 'http://localhost:8123',
     username: process.env.CHUSERNAME || 'default',
     password: process.env.CHPASSWORD || '',
     database: db,
