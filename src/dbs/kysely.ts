@@ -59,7 +59,7 @@ export async function syncTable<
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if (bookmark?.rowTimestamp && bookmark?.rowId) {
         completeQuery = completeQuery.where((eb) => eb.or([
-          eb(udColumn, '>=', bookmark.rowTimestamp as TSComplex),
+          eb(udColumn, '>', bookmark.rowTimestamp as TSComplex),
           eb.and([
             eb(udColumn, '=', bookmark.rowTimestamp as TSComplex),
             eb(pkColumn, '>', bookmark.rowId as TSComplex),
