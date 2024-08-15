@@ -36,6 +36,7 @@ export async function syncTable<
     delaySeconds?: number;
     rowMapper?: RowMapper;
     optimize?: boolean;
+    pageSize?: number;
   },
 ) {
   // Type assertion: Ensure that Schema[T] extends HasUpdatedAt
@@ -59,7 +60,7 @@ export async function syncTable<
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if (bookmark?.rowTimestamp && bookmark?.rowId) {
         completeQuery = completeQuery.where((eb) => eb.or([
-          eb(udColumn, '>', bookmark.rowTimestamp as TSComplex),
+          eb(udColumn, '>=', bookmark.rowTimestamp as TSComplex),
           eb.and([
             eb(udColumn, '=', bookmark.rowTimestamp as TSComplex),
             eb(pkColumn, '>', bookmark.rowId as TSComplex),
@@ -85,6 +86,7 @@ export async function syncTable<
     },
     clickhouse: ch,
     tableName: spec.to,
+    pageSize: spec.pageSize,
   }, bookmark);
   if (spec.optimize !== false) {
     await ch.command({ query: `OPTIMIZE TABLE ${spec.to} FINAL` });
@@ -213,9 +215,10 @@ export class KyselySyncContext<Schema, B extends Partial<Record<keyof Schema, Bo
    * Sync a table that tracks its updates with an updated_at column
    */
   async withUpdatedAt<T extends keyof Schema & string>(table: T, opts?: {
-    pk?: AnyColumn<Schema, T>,
-    timestampColumn?: AnyColumn<Schema, T>,
-    rowMapper?: RowMapper,
+    pk?: AnyColumn<Schema, T>;
+    timestampColumn?: AnyColumn<Schema, T>;
+    rowMapper?: RowMapper;
+    pageSize?: number;
   }) {
     const { pk, timestampColumn } = opts || {};
     return syncTable(
