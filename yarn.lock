@@ -50,19 +50,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@clickhouse/client-common@npm:1.4.1":
-  version: 1.4.1
-  resolution: "@clickhouse/client-common@npm:1.4.1"
-  checksum: 69bd0c9e3d4ab2135f73fa4a8e60bc5c1ee7ca4e7cd036e83b849d3a36166401c1d6da114da43e31c63addb5f9dabfe157b7d77a236644275a6b319a9c9d1e3b
+"@clickhouse/client-common@npm:1.5.0":
+  version: 1.5.0
+  resolution: "@clickhouse/client-common@npm:1.5.0"
+  checksum: 13297145e9aee550e30922e46b29834f060f664d5b5a0e33d4e512058c2bfc11fb954689d18166d69f1e5441e3890a28825eb114fd32ca422ebc9707d7890e12
   languageName: node
   linkType: hard
 
-"@clickhouse/client@npm:^1.4.1":
-  version: 1.4.1
-  resolution: "@clickhouse/client@npm:1.4.1"
+"@clickhouse/client@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "@clickhouse/client@npm:1.5.0"
   dependencies:
-    "@clickhouse/client-common": 1.4.1
-  checksum: 462e37289f5d57fbb7d49aa1f1d1e4b2f05b76a8a19080e5bcd9b16b596472cc542fcd61da6eeab05b02f38b677e5d2e8a01564163a589b6a0351714323ab382
+    "@clickhouse/client-common": 1.5.0
+  checksum: 18984911455b867c177fb6e34fa8476b098acc2f7ed1cdcbc346a9110b8a3bb74a9e80173fc371f5f8e5bc6f0fc94277f94b6176fecb16a4be0721f0890deeef
   languageName: node
   linkType: hard
 
@@ -685,9 +685,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@semantic-release/github@npm:^10.1.5":
-  version: 10.1.5
-  resolution: "@semantic-release/github@npm:10.1.5"
+"@semantic-release/github@npm:^10.1.7":
+  version: 10.1.7
+  resolution: "@semantic-release/github@npm:10.1.7"
   dependencies:
     "@octokit/core": ^6.0.0
     "@octokit/plugin-paginate-rest": ^11.0.0
@@ -707,7 +707,7 @@ __metadata:
     url-join: ^5.0.0
   peerDependencies:
     semantic-release: ">=20.1.0"
-  checksum: f5d74aaab7b69535384ef41ee9f0f67a6814619b0ddb4c3c4b171de0215f51cf667b8f9699823f96e94e1cd46fad2aec9540b4a13c0ea5545c750cd9806248f3
+  checksum: 507f2e2706951e13990c0c5b9962578decea7e78aba3a72c6d3cb846f2e2134c5a5c1780a321630940870609e8a0701db20768d8853736d96dfb11e80601ca26
   languageName: node
   linkType: hard
 
@@ -715,11 +715,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@sesamecare-oss/to-clickhouse@workspace:."
   dependencies:
-    "@clickhouse/client": ^1.4.1
+    "@clickhouse/client": ^1.5.0
     "@openapi-typescript-infra/coconfig": ^4.4.0
     "@semantic-release/exec": ^6.0.3
-    "@semantic-release/github": ^10.1.5
-    "@types/node": ^20.14.15
+    "@semantic-release/github": ^10.1.7
+    "@types/node": ^20.16.1
     "@types/pg": ^8.11.6
     "@types/pg-cursor": ^2.7.2
     "@typescript-eslint/eslint-plugin": ^6.21.0
@@ -798,12 +798,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^20.14.15":
-  version: 20.14.15
-  resolution: "@types/node@npm:20.14.15"
+"@types/node@npm:*, @types/node@npm:^20.16.1":
+  version: 20.16.1
+  resolution: "@types/node@npm:20.16.1"
   dependencies:
-    undici-types: ~5.26.4
-  checksum: 0407600c1a426efd3e97c94ef1c13edce453142a06ea4be7102bf7be3e907ea578872c7795988a72e981b8ffe942f8cfaafd98552ba82915cd6f963dd1fa9adc
+    undici-types: ~6.19.2
+  checksum: 2b8f30f416f5c1851ffa8a13ef6c464a5e355edfd763713c22813a7839f6419a64e27925f9e89c972513d78432263179332f0bffb273d16498233bfdf495d096
   languageName: node
   linkType: hard
 
@@ -4787,10 +4787,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~5.26.4":
-  version: 5.26.5
-  resolution: "undici-types@npm:5.26.5"
-  checksum: 3192ef6f3fd5df652f2dc1cd782b49d6ff14dc98e5dced492aa8a8c65425227da5da6aafe22523c67f035a272c599bb89cfe803c1db6311e44bed3042fc25487
+"undici-types@npm:~6.19.2":
+  version: 6.19.8
+  resolution: "undici-types@npm:6.19.8"
+  checksum: de51f1b447d22571cf155dfe14ff6d12c5bdaec237c765085b439c38ca8518fc360e88c70f99469162bf2e14188a7b0bcb06e1ed2dc031042b984b0bb9544017
   languageName: node
   linkType: hard
 
